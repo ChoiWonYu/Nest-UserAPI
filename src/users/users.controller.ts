@@ -10,24 +10,27 @@ export class UsersController {
 
   @Post()
   async create(@Body() dto: CreateUserDto): Promise<void> {
-    console.log(dto);
+    const { name, email, password } = dto;
+    await this.usersService.createUser(name, email, password);
   }
 
   @Post('/email-verify')
+  //이메일 인증
   async verifyEmail(@Query() dto: VerifyEmailDto): Promise<string> {
-    console.log(dto);
-    return;
+    const { signupVerifyToken } = dto;
+    await this.usersService.verifyEmail(signupVerifyToken);
   }
 
   @Post('/login')
+  //로그인
   async login(@Body() dto: UserLoginDto): Promise<string> {
-    console.log(dto);
-    return;
+    const { email, password } = dto;
+    await this.usersService.login(email, password);
   }
 
   @Get('/:id')
+  //회원 조회
   async getUserInfo(@Param('id') id: string): Promise<string> {
-    console.log(id);
-    return;
+    return await this.usersService.getUserInfo(id);
   }
 }

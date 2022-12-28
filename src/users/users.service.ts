@@ -1,26 +1,50 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { EmailService } from 'src/email/email.service';
+import * as uuid from 'uuid';
 
 @Injectable()
 export class UsersService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  constructor(private emailService: EmailService) {}
+  async createUser(name: string, email: string, password: string) {
+    await this.checkUserExists(email);
+
+    const signupVerifyToken = uuid.v1();
+    //토큰 생성
+
+    await this.saveUser(name, email, password, signupVerifyToken);
+    await this.sendMemberJoinEmail(email, signupVerifyToken);
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async checkUserExists(email: string) {
+    return false;
+    //DB 공부 이후 추가 예정
+  }
+  async saveUser(
+    name: string,
+    email: string,
+    password: string,
+    signupVerifyToken: string,
+  ) {
+    return;
+    //DB 공부 이후 추가 예정
+  }
+  async sendMemberJoinEmail(email: string, signupVerifyToken: string) {
+    await this.emailService.sendMemberJoinVerification(
+      email,
+      signupVerifyToken,
+    );
+    //이메일 기능은 따로 서비스 파일로 분리
+    //회원가입 인증 이메일 발송
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async verifyEmail(signupVerifyToken: string): Promise<string> {
+    throw new Error('Method not implement');
   }
-
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async login(email: string, password): Promise<string> {
+    throw new Error('Method not implement');
   }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async getUserInfo(id: string): Promise<string> {
+    throw new Error('Method not implement');
   }
 }
