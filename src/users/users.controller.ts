@@ -16,14 +16,14 @@ export class UsersController {
 
   @Post('/email-verify')
   //이메일 인증
-  async verifyEmail(@Query() dto: VerifyEmailDto): Promise<string> {
+  async verifyEmail(@Query() dto: VerifyEmailDto) {
     const { signupVerifyToken } = dto;
     await this.usersService.verifyEmail(signupVerifyToken);
   }
 
   @Post('/login')
   //로그인
-  async login(@Body() dto: UserLoginDto): Promise<string> {
+  async login(@Body() dto: UserLoginDto) {
     const { email, password } = dto;
     await this.usersService.login(email, password);
   }

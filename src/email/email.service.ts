@@ -14,10 +14,10 @@ export class EmailService {
 
   constructor() {
     this.transporter = nodemailer.createTransport({
-      service: 'Gmail',
+      service: process.env.EMAIL_SERVICE,
       auth: {
-        user: 'MY_GMAIL',
-        pass: 'MY_PASSWORD',
+        user: process.env.EMAIL_AUTH_USER,
+        pass: process.env.EMAIL_AUTH_PASSWORD,
       },
     });
   }
@@ -25,7 +25,7 @@ export class EmailService {
     emailAddress: string,
     signupVerifyToken: string,
   ) {
-    const baseUrl = 'http://localhost:3000';
+    const baseUrl = process.env.EMAIL_BASE_URL;
     const url = `${baseUrl}/users/email-verify?signupVerifyToken=${signupVerifyToken}`;
     const mailOptions: EmailOptions = {
       to: emailAddress,
